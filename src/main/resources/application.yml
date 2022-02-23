@@ -1,0 +1,41 @@
+spring:
+  config:
+    activate:
+      on-profile: default
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+  r2dbc:
+#    You do not need to specify a driver class name, since Spring Boot obtains the driver from R2DBC?s Connection Factory discovery.
+    name: review-note
+    url: r2dbc:h2:mem:///review-note?options?MODE=MySQL;DATABASE_TO_UPPER=FALSE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+    username: sa
+    password:
+    pool:
+      initial-size: 10
+      max-size: 10
+      max-idle-time: 3m
+      max-create-connection-time: 3s
+      max-life-time: 15s
+      validation-query: SELECT 1
+    properties:
+      connect-timeout: 3s
+      max-acquire-time: 3s
+  sql:
+    init:
+      schema-locations: classpath:db/db-schema.sql
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: r2dbc:h2:mem:///review-note?options?MODE=MySQL;DATABASE_TO_UPPER=FALSE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+    username: sa
+    password:
+
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+
