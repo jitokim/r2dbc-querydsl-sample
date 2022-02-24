@@ -2,7 +2,7 @@ package com.example.r2dbcquerydslsample.config
 
 import com.querydsl.sql.MySQLTemplates
 import com.querydsl.sql.SQLTemplates
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
+import org.springframework.boot.autoconfigure.r2dbc.R2dbcProperties
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -13,12 +13,12 @@ import javax.sql.DataSource
 class DataSourceConfig {
 
     @Bean
-    fun datasource(properties: DataSourceProperties): DataSource {
+    fun datasource(r2dbcProperties: R2dbcProperties): DataSource {
         val builder = DataSourceBuilder.create()
-        builder.driverClassName(properties.driverClassName)
-        builder.url(properties.url)
-        builder.username(properties.username)
-        builder.password(properties.password)
+        builder.driverClassName(r2dbcProperties.properties.getOrDefault("driver-class-name", "com.mysql.cj.jdbc.Driver"))
+        builder.url(r2dbcProperties.url)
+        builder.username(r2dbcProperties.username)
+        builder.password(r2dbcProperties.password)
         builder.type(SimpleDriverDataSource::class.java)
         return builder.build()
     }
